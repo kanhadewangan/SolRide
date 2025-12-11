@@ -1,16 +1,19 @@
 {
-  "name": "db",
+  "name": "@my-turborepo/db",
   "module": "index.ts",
   "type": "module",
   "exports": "./index.ts",
   "private": true,
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "prisma": "7"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
+    "@prisma/adapter-pg": "^7.1.0",
+    "@prisma/client": "7",
     "dotenv": "^17.2.3"
   }
 }

@@ -14,6 +14,6 @@ echo "Pushing to Remote"
  current_branch=$(git branch --show-current)
  echo current branch is $current_branch
 
-git push origin $current_branch
+git push orign $current_branch
 echo "Done!"
 
