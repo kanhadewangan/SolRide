@@ -1,0 +1,114 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+model user{
+  id String @id @default(uuid())
+  name String
+  email String @unique
+  password String
+  wallet_address String @unique
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  roles roles
+  isVerified Boolean @default(false)
+  isDeleted Boolean @default(false)
+  verificationTokens verificationToken[]
+  vehicals  vehical[]
+  riders rider[]
+  sessions session[]
+} 
+
+enum roles{
+  USER
+  Rider
+  Admin
+
+}
+model verificationToken{
+  id String @id @default(uuid())
+  token String @unique
+  userId String
+  user user @relation(fields: [userId], references: [id])
+  created_at DateTime @default(now())
+  expires_at DateTime
+}
+
+model vehical{
+  id String @id @default(uuid())
+  userId String
+  user user @relation(fields: [userId], references: [id])
+  vehical_number String @unique
+  vehical_type String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model rider {
+  id String @id @default(uuid())
+  userId String
+  user user @relation(fields: [userId], references: [id])
+  license_number String @unique
+  license_expiry DateTime
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  rides rides[]
+}
+model session {
+  id String @id @default(uuid())
+  userId String
+  user user @relation(fields: [userId], references: [id])
+  session_token String @unique
+  expires_at DateTime
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model rides {
+  id String @id @default(uuid())
+  riderId String
+  rider rider @relation(fields: [riderId], references: [id])
+  pickup_location String
+  pickup_latitude Float
+  pickup_longitude Float
+  dropoff_latitude Float?
+  dropoff_longitude Float?
+  pickup_time DateTime
+  dropoff_time DateTime?
+  dropoff_location String
+  fare Float
+  status rideStatus @default(PENDING)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  rating rating[]
+  
+}
+
+enum rideStatus {
+  PENDING
+  ONGOING
+  COMPLETED
+  CANCELLED
+}
+
+model rating {
+  id String @id @default(uuid())
+  rideId String
+  ride rides @relation(fields: [rideId], references: [id])
+  rating_value Int
+  review String?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}

@@ -1,0 +1,1 @@
+export * as prismaClient from './prismaClient';
