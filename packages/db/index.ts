@@ -1,1 +1,4 @@
-export * as prismaClient from './prismaClient';
+import { PrismaClient } from "./generated/prisma/client";
+
+
+export  default PrismaClient ;
